@@ -16,9 +16,6 @@
 
 package org.springframework.context.annotation;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -30,6 +27,9 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.PatternMatchUtils;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A bean definition scanner that detects bean candidates on the classpath,
@@ -348,6 +348,7 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		if (originatingDef != null) {
 			existingDef = originatingDef;
 		}
+		// 示例: 创建了两个AppConfig, 扫描了同一个包
 		// 是否兼容，如果兼容返回false表示不会重新注册到Spring容器中，如果不冲突则会抛异常。
 		if (isCompatible(beanDefinition, existingDef)) {
 			return false;
