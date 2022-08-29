@@ -232,6 +232,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			// Check if bean definition exists in this factory.
+			// 自己BeanFactory中没有, 则去父BeanFactory中获取
 			BeanFactory parentBeanFactory = getParentBeanFactory();
 			if (parentBeanFactory != null && !containsBeanDefinition(beanName)) {
 				// Not found -> check parent.
@@ -307,6 +308,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw ex;
 						}
 					});
+					// 处理FactoryBean
 					beanInstance = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 				else if (mbd.isPrototype()) {

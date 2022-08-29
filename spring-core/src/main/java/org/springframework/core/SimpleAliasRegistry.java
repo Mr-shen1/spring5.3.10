@@ -16,19 +16,18 @@
 
 package org.springframework.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Assert;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
+import org.springframework.util.StringValueResolver;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import org.springframework.util.Assert;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.util.StringValueResolver;
 
 /**
  * Simple implementation of the {@link AliasRegistry} interface.
@@ -211,6 +210,10 @@ public class SimpleAliasRegistry implements AliasRegistry {
 		// Handle aliasing...
 		String resolvedName;
 		do {
+			// Map<String, String> aliasMap ==> key为别名, value为beanName
+			// <userService1, userService>
+			// <userService2, userService>
+			// do...While 主要是为了处理 <userService2, userService1>, 使其最终拿到userService
 			resolvedName = this.aliasMap.get(canonicalName);
 			if (resolvedName != null) {
 				canonicalName = resolvedName;
