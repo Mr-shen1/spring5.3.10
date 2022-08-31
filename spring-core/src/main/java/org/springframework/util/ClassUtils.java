@@ -16,31 +16,14 @@
 
 package org.springframework.util;
 
+import org.springframework.lang.Nullable;
+
 import java.beans.Introspector;
 import java.io.Closeable;
 import java.io.Externalizable;
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Proxy;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.IdentityHashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.StringJoiner;
-
-import org.springframework.lang.Nullable;
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * Miscellaneous {@code java.lang.Class} utility methods.
@@ -189,6 +172,8 @@ public abstract class ClassUtils {
 		ClassLoader cl = null;
 
 		// 优先获取线程中的类加载器
+		// 打成war部署到Tomcat后, Tomcat会将它自定义的类加载器设置到线程中, 这里就可以取到了
+		//Thread.currentThread().setContextClassLoader();
 		try {
 			cl = Thread.currentThread().getContextClassLoader();
 		}
@@ -202,7 +187,7 @@ public abstract class ClassUtils {
 			cl = ClassUtils.class.getClassLoader();
 			if (cl == null) {
 				// getClassLoader() returning null indicates the bootstrap ClassLoader
-				// 加入ClassUtils是被Bootstrap类加载器加载的，则获取系统类加载器
+				// 加入ClassUtils是被Bootstrap类加载器加载的，则获取系统类加载器 jre/lib目录
 				try {
 					cl = ClassLoader.getSystemClassLoader();
 				}
