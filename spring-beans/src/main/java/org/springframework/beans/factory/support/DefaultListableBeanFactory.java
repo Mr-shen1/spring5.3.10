@@ -1268,6 +1268,8 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	public Object resolveDependency(DependencyDescriptor descriptor, @Nullable String requestingBeanName,
 			@Nullable Set<String> autowiredBeanNames, @Nullable TypeConverter typeConverter) throws BeansException {
 		// 用来获取方法入参名字的
+		// 因为Jdk1.7无法通过反射直接拿到方法入参的名字, Jdk8提供了获取方法入参名字的api, 但是还需要在maven中配置
+		// getParameterNameDiscoverer() 1. 提供通过反射拿到方法入参名字的发现器 2. 提供通过asm字节码技术获取方法入参名字的发现器
 		descriptor.initParameterNameDiscovery(getParameterNameDiscoverer());
 
 		// 所需要的类型是Optional
